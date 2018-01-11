@@ -1,11 +1,25 @@
 {
   "name": "react-native-manager",
   "version": "0.0.1",
-  "description": "",
+  "description": "Manager for Android",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "tageecc@gmail.com",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tageecc/react-native-manager.git"
+  },
+  "keywords": [
+    "sms",
+    "android",
+    "react-native",
+    "manager"
+  ],
+  "bugs": {
+    "url": "https://github.com/tageecc/react-native-manager/issues"
+  },
+  "homepage": "https://github.com/tageecc/react-native-manager#readme"
 }
