@@ -26,21 +26,21 @@ async fun() {
 
 ## Options
 
-There are lots of options to filter the returned SMS:
+There are lots of options to filter the returned SMS，and all of the value supports regular matching:
 
 ```javascript
 
 var filter = {
     _id: "",                    // autoincrement, start from 1
     thread_id: "",              // thread_id，the same sender's ID is the same
-    address: "",                // number of the sender
+    address: "1234*",                // number of the sender
     person: "",                 // Contacts，null for stranger
     date: "",                   // date
     protocol: "",               // 0 SMS_RPOTO, 1 MMS_PROTO
-    read: "",                   // 0 unread， 1 read
+    read: "1",                   // 0 unread， 1 read
     status: "",                 // -1 received，0 complete, 64 pending, 128 failed
-    type: "",                   // 1 receive，2 send
-    body: "",                   // message content
+    type: "1",                   // 1 receive，2 send
+    body: ".* matched .*",                   // message content
     service_center: "",         // SMS service center number
     subject: "",                // subject
     reply_path_present: "",     // TP-Reply-Path
