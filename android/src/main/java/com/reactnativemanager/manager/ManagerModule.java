@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.Manifest;
 import android.support.v4.content.PermissionChecker;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,7 +44,6 @@ public class ManagerModule extends ReactContextBaseJavaModule {
             defaultFilter.put("thread_id", "");             // 序号，同一发信人的id相同
             defaultFilter.put("address", "");               // 发件人手机号码
             defaultFilter.put("person", "");                // 联系人列表里的序号，陌生人为null
-            defaultFilter.put("date", "");                  // 发件日期
             defaultFilter.put("protocol", "");              // 协议，分为： 0 SMS_RPOTO, 1 MMS_PROTO
             defaultFilter.put("read", "");                  // 是否阅读 0未读， 1已读
             defaultFilter.put("status", "");                // 状态 -1接收，0 complete, 64 pending, 128 failed
@@ -56,10 +54,10 @@ public class ManagerModule extends ReactContextBaseJavaModule {
             defaultFilter.put("reply_path_present", "");    // TP-Reply-Path
             defaultFilter.put("locked", "");                // locked
             defaultFilter.put("sms_type", "");              // 默认 "" 所有短信,inbox 收件箱,sent 已发送,draft 草稿,outbox 发件箱,failed 发送失败,queued 待发送列表
-            defaultFilter.put("count", "10");               // 返回数量
 
             JSONObject filter = Util.convertMapToJson(_filter);
             filter = Util.deepMerge(defaultFilter, filter);
+
             Uri uri = Uri.parse("content://sms/" + filter.getString("sms_type"));
             Cursor cur = getCurrentActivity().getContentResolver().query(uri, null, null, null, "date desc"); // 获取手机内部短信
 
@@ -99,10 +97,6 @@ public class ManagerModule extends ReactContextBaseJavaModule {
                     if (filter.getString("person").length() != 0) {
                         Pattern pattern = Pattern.compile(filter.getString("person"));
                         if (!pattern.matcher(person).matches()) continue;
-                    }
-                    if (filter.getString("date").length() != 0) {
-                        Pattern pattern = Pattern.compile(filter.getString("date"));
-                        if (!pattern.matcher("" + date).matches()) continue;
                     }
                     if (filter.getString("protocol").length() != 0) {
                         Pattern pattern = Pattern.compile(filter.getString("protocol"));
@@ -144,8 +138,14 @@ public class ManagerModule extends ReactContextBaseJavaModule {
                         Pattern pattern = Pattern.compile(filter.getString("locked"));
                         if (!pattern.matcher("" + locked).matches()) continue;
                     }
-                    if (smsList.length() >= filter.getInt("count")) break;
-
+                    if (filter.has("date")) {
+                        JSONObject _date = filter.getJSONObject("date");
+                        long gt = _date.has("gt")?_date.getLong("gt"):0;
+                        long lt = _date.has("lt")?_date.getLong("lt"):0;
+                        if(gt!=0&&date<gt) break;
+                        if(lt!=0&&date>lt) continue;
+                    }
+                    if (filter.has("count") && smsList.length() >= filter.getInt("count")) break;
 
                     sms.put("_id", _id);
                     sms.put("thread_id", thread_id);

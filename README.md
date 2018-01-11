@@ -26,27 +26,30 @@ async fun() {
 
 ## Options
 
-There are lots of options to filter the returned SMS，and all of the value supports regular matching:
+There are lots of options to filter the returned SMS，and all of the value supports regular expression matching:
 
 ```javascript
 
 var filter = {
     _id: "",                    // autoincrement, start from 1
     thread_id: "",              // thread_id，the same sender's ID is the same
-    address: "1234*",                // number of the sender
+    address: "1234*",           // number of the sender
     person: "",                 // Contacts，null for stranger
-    date: "",                   // date
     protocol: "",               // 0 SMS_RPOTO, 1 MMS_PROTO
-    read: "1",                   // 0 unread， 1 read
+    read: "1",                  // 0 unread， 1 read
     status: "",                 // -1 received，0 complete, 64 pending, 128 failed
-    type: "1",                   // 1 receive，2 send
-    body: ".* matched .*",                   // message content
+    type: "1",                  // 1 receive，2 send
+    body: ".* matched .*",      // message content
     service_center: "",         // SMS service center number
     subject: "",                // subject
     reply_path_present: "",     // TP-Reply-Path
     locked: "",                 // locked
     sms_type: "",               // '' for all (default), 'sent', 'draft', 'outbox', 'failed', 'queued'
-    count: 10                   // count of SMS to return each time
+    count: 10,                  // count of SMS to return each time, no set for all (default)
+    date: {                     // date filter
+        gt:'1512057600000',     // Note that the format is a time stamp
+        lt:'1514736000000'
+    },
 };
 
 async fun() {
