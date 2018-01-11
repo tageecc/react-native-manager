@@ -32,7 +32,7 @@ public class ManagerModule extends ReactContextBaseJavaModule {
 
         if(PermissionChecker.PERMISSION_GRANTED!=PermissionChecker.checkSelfPermission(getReactApplicationContext(), Manifest.permission.READ_SMS)){
             Toast.makeText(getReactApplicationContext(), "Permission denied！", Toast.LENGTH_SHORT).show();
-            promise.reject("NOPermissionException","Permission denied！Please make sure that you have read SMS permission");
+            promise.reject("Permission denied！Please make sure that you have read SMS permission");
             return;
         }
 
@@ -175,7 +175,7 @@ public class ManagerModule extends ReactContextBaseJavaModule {
             promise.resolve(Util.convertJsonToArray(smsList));
 
         } catch (Exception ex) {
-            promise.reject("Exception",ex);
+            promise.reject(ex);
         }
     }
 }
